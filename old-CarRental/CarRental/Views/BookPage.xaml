@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:vm="clr-namespace:CarRental.ViewModels"
+			 x:Class="CarRental.Views.BookPage"
+			 x:DataType="vm:BookViewModel">
+
+
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Departure Date" />
+            <DatePicker Date="{Binding DepartureDate}" />
+
+            <Label Text="Return Date" />
+            <DatePicker Date="{Binding ReturnDate}" />
+
+            <Label Text="Number of Seats" />
+            <Picker Title="Select seats"
+                    ItemsSource="{Binding SeatOptions}"
+                    SelectedItem="{Binding SelectedSeat}" />
+
+            <Label Text="Gearbox" />
+            <Picker Title="Select gearbox"
+                    ItemsSource="{Binding GearboxOptions}"
+                    SelectedItem="{Binding SelectedGearbox}" />
+
+            <Button Text="Search"
+                    Command="{Binding SearchCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+    
+    
+</ContentPage>
