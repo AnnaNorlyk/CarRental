@@ -1,26 +1,30 @@
 import { Router, Request, Response } from "express";
-import { CreateUserDTO} from "../DTO/CreateUserDTO";
+import { CreateUserDTO } from "../DTO/CreateUserDTO";
 import { createUser } from "../Services/UserService";
 
 const UserRoutes = Router();
 
-UserRoutes.post("/users", async (req: Request<{}, {}, CreateUserDTO>, res: Response) => {
-  const { firstName, lastName, email, license } = req.body;
+UserRoutes.post("/users", (req: Request<{}, {}, CreateUserDTO>, res: Response): void => {
+  const dto = req.body;  
 
+  const { firstName, lastName, email, license } = dto;
   if (!firstName || !lastName || !email || !license) {
     res.status(400).json({ error: "Missing required fields." });
     return;
   }
 
-  const user = await createUser({ firstName, lastName, email, license });
-
-  if (!user) {
-    res.status(409).json({ error: "User already exists." });
-    return;
-  }
-
-  res.status(201).json({ message: "User created", userId: user.id });
+  createUser(dto)
+    .then(user => {
+      if (!user) {
+        res.status(409).json({ error: "User already exists." });
+      } else {
+        res.status(201).json({ message: "User created", license: user.id });
+      }
+    })
+    .catch(err => {
+      console.error("Error in createUser:", err);
+      res.status(500).json({ error: "Internal server error" });
+    });
 });
-
 
 export default UserRoutes;

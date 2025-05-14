@@ -1,32 +1,44 @@
+// src/Middleware/RequireAuth.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-
-export interface AuthRequest extends Request {
-  user?: { userId: string; role: string };
-}
+import { AuthRequest } from "./AuthRequest";
 
 export function requireAuth(
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ): void {
-  const header = req.headers.authorization;
-  if (!header?.startsWith("Bearer ")) {
-    res.sendStatus(401);               
+  const authHeader = req.header("Authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    // no token provided
+    res.status(401).json({ error: "Not authenticated" });
     return;
   }
 
-  const token = header.split(" ")[1];
-
+  const token = authHeader.slice(7);
   try {
-    const decoded = jwt.verify(
+    // verify token
+    const payload = jwt.verify(
       token,
       process.env.JWT_SECRET as jwt.Secret
-    ) as { userId: string; role: string };
+    ) as { license?: string; role?: string };
 
-    req.user = decoded;               
+    // our JWT payload carries license instead of `userId`
+    if (!payload.license || !payload.role) {
+      res.status(401).json({ error: "Not authenticated" });
+      return;
+    }
+
+    // map the license to userId for handlers
+    req.user = {
+      userId: payload.license,
+      role:   payload.role,
+    };
+
     next();
   } catch {
-    res.sendStatus(403);               
+    // invalid or expired token
+    res.status(401).json({ error: "Not authenticated" });
   }
 }
+

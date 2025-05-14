@@ -1,18 +1,27 @@
-
-import { Router } from "express";
-import { requireAuth } from "../Middleware/requireAuth";
-import { redisPub } from "../Redis/client";
+import { Router, Response, NextFunction } from "express";
+import { AuthRequest }   from "../Middleware/AuthRequest";
+import { requireAuth }   from "../Middleware/RequireAuth";
+import { validatePickup } from "../Services/BookingService";
+import { redisPub }      from "../Redis/client";
 
 const router = Router();
 
-router.post("/drawer/unlock", requireAuth, async (req, res) => {
-  await redisPub.publish("cabinet-channel", "open-cabinet");   // 🔑
-  res.json({ message: "Unlock command sent" });
-});
+router.post(
+  "/drawer/unlock",
+  requireAuth,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      //Confirm that the user has an active booking
+      const bookingId = await validatePickup(req.user!.userId);
 
-router.post("/drawer/lock", requireAuth, async (req, res) => {
-  await redisPub.publish("cabinet-channel", "close-cabinet");
-  res.json({ message: "Lock command sent" });
-});
+      // Publish the "open-cabinet" command
+      await redisPub.publish("cabinet-channel", "open-cabinet");
+
+      res.json({ message: "Unlock command sent", bookingId });
+    } catch (err: any) {
+      next(err);
+    }
+  }
+);
 
 export default router;

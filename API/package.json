@@ -15,13 +15,16 @@
     "express": "^5.1.0",
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
+    "node-fetch": "^3.3.2",
     "onoff": "^6.0.3",
-    "redis": "^5.0.1"
+    "redis": "^5.0.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^22.15.3",
+    "@types/node": "^22.15.17",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
   }
