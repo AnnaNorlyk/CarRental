@@ -1,5 +1,3 @@
-// scripts/testUnlock.js
-// Node 18+ has fetch built-in; no need for node-fetch
 ;(async () => {
   const apiBase = "http://localhost:3000";
   const EMAIL   = "brian@test.com";
@@ -7,7 +5,7 @@
   const DRAWER  = "drawer1";
   const VEHICLE = "vehicle123";
 
-  // ─── 0) Ensure user exists ───────────────────────────────
+  // Ensure user exists
   console.log("→ POST /api/users");
   let res = await fetch(`${apiBase}/api/users`, {
     method:  "POST",
@@ -21,7 +19,7 @@
   });
   console.log("  Status:", res.status, "Body:", await res.text());
 
-  // ─── 1) Log in ────────────────────────────────────────────
+  // Log in 
   console.log("\n→ POST /api/login");
   res = await fetch(`${apiBase}/api/login`, {
     method:  "POST",
@@ -35,7 +33,7 @@
   const { token } = await res.json();
   console.log("  Got token:", token);
 
-  // ─── 2) Create booking ───────────────────────────────────
+  // Create booking 
   console.log("\n→ POST /api/bookings");
   const now       = new Date();
   const inOneHour = new Date(now.getTime() + 60 * 60 * 1000);
@@ -66,7 +64,7 @@
     return process.exit(1);
   }
 
-  // ─── 3) Unlock drawer ────────────────────────────────────
+  // Unlock drawer 
   console.log("\n→ POST /api/drawer/unlock");
   res = await fetch(`${apiBase}/api/drawer/unlock`, {
     method:  "POST",
