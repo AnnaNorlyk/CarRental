@@ -1,13 +1,22 @@
 import { v4 as uuid } from "uuid";
 import { redisPub as redis } from "../Redis/client";
 import { CreateBookingDTO } from "../DTO/CreateBookingDTO";
-import { Booking }          from "../Models/Booking";
+import { Booking } from "../Models/Booking";
+import { getVehicleById } from "./VehicleService";
 
 class Forbidden extends Error { status = 403; }
 
 
 //Create a new booking record in Redis.
 export async function createBooking(userId: string, dto: CreateBookingDTO): Promise<Booking> {
+  // Verify vehicle exists and is available
+  const vehicle = await getVehicleById(dto.vehicleId);
+  if (!vehicle || !vehicle.isAvailable) {
+    const err: any = new Error("Vehicle not found or unavailable");
+    err.status = 400;
+    throw err;
+}
+
   const dropoffCode    = Math.random().toString(36).slice(-6).toUpperCase();
   const collectionCode = Math.random().toString(36).slice(-6).toUpperCase();
 
@@ -27,14 +36,14 @@ export async function createBooking(userId: string, dto: CreateBookingDTO): Prom
   };
 
   const key = `booking:${booking.id}`;
-  // Store all booking fields (including userId) in a hash
+  // Store all booking fields in a hash
   await redis.hSet(key, {
     ...Object.fromEntries(
       Object.entries(booking).map(([k, v]) => [k, v.toString()])
     ),
     userId,
   });
-  // Map user → booking for quick lookup
+  // Map user 
   await redis.set(`booking:user:${userId}`, booking.id);
 
   return booking;
@@ -57,7 +66,7 @@ export async function dropoffBooking(bookingId: string): Promise<void> {
 /**
  * Validates that the user has an active booking
  * and that the key hasn’t yet been retrieved or returned.
- * Returns the bookingId if valid, or throws Forbidden.
+ * Returns the bookingId if valid
  */
 export async function validatePickup(userId: string): Promise<string> {
   const bookingId = await redis.get(`booking:user:${userId}`);
