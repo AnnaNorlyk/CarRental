@@ -2,7 +2,6 @@
   const apiBase = "http://localhost:3000";
   const EMAIL   = "brian@test.com";
   const LICENSE = "LIC456";
-  const DRAWER  = "drawer1";
   const VEHICLE = "vehicle123";
 
   // Ensure user exists
@@ -45,7 +44,6 @@
       "Authorization": `Bearer ${token}`,
     },
     body: JSON.stringify({
-      drawerId:           DRAWER,
       vehicleId:          VEHICLE,
       customerFirstName:  "Brian",
       customerLastName:   "Larsen",
@@ -72,7 +70,7 @@
       "Content-Type":  "application/json",
       "Authorization": `Bearer ${token}`,
     },
-    body: JSON.stringify({ drawerId: DRAWER }),
+
   });
   console.log("  Status:", res.status, "Body:", await res.text());
 

@@ -1,6 +1,5 @@
 // src/DTO/CreateBookingDTO.ts
 export interface CreateBookingDTO {
-  drawerId: string;
   vehicleId: string;
   customerFirstName: string;
   customerLastName: string;

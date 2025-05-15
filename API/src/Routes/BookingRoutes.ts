@@ -21,7 +21,6 @@ router.post(
     try {
       const body = req.body as Partial<CreateBookingDTO>;
       const required: Array<keyof CreateBookingDTO> = [
-        "drawerId",
         "vehicleId",
         "customerFirstName",
         "customerLastName",
