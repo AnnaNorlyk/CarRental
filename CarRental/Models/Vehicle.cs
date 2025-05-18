@@ -1,6 +1,6 @@
 ﻿namespace CarRental.Models
 {
-    public class Car
+    public class Vehicle
     {
         public string Name { get; set; } = string.Empty;
         public string Brand { get; set; } = string.Empty;

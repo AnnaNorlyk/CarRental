@@ -32,7 +32,7 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<DeliverKeyViewModel>();
 
-        builder.Services.AddSingleton<ICarService, CarService>();
+        builder.Services.AddSingleton<IVehicleService, VehicleService>();
 
         builder.Services.AddSingleton<HttpClient>();
 

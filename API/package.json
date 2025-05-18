@@ -16,7 +16,8 @@
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "onoff": "^6.0.3",
-    "redis": "^5.0.1"
+    "redis": "^5.0.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
