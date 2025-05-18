@@ -10,7 +10,7 @@ public partial class ChooseCarPage : ContentPage
 
     private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is Car selectedCar &&
+        if (e.CurrentSelection.FirstOrDefault() is Vehicle selectedCar &&
             BindingContext is ChooseCarViewModel vm)
         {
             vm.SelectCarCommand.Execute(selectedCar);
