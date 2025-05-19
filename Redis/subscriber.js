@@ -1,54 +1,66 @@
-const { createClient } = require('redis');
-const os = require('os'); // Import Node's 'os' module to detect which system we're running on (Linux or not)
+﻿const { createClient } = require('redis');
+const os = require('os');
 let Gpio, relay;
 
+// GPIO setup – virker på Raspberry Pi (Linux)
 if (os.platform() === 'linux') {
     Gpio = require('onoff').Gpio;
     relay = new Gpio(17, 'out');
-    console.log(' GPIO initialized (Linux/Raspberry Pi)');
+    console.log('GPIO initialized (Linux/Raspberry Pi)');
 } else {
     console.log('Running on non-Linux system (GPIO mocked)');
 }
 
-// Set up Redis client
-const subscriber = createClient();
+// Forbind til Redis-server (Windows IP)
+const subscriber = createClient({
+    socket: {
+        host: '10.176.69.110', // ← din opdaterede IP!
+        port: 6379
+    }
+});
 
-subscriber.on('error', (err) => console.error('Redis error:', err));
+subscriber.on('error', (err) => {
+    console.error('Redis error:', err);
+});
 
-// Connect and subscribe
 async function start() {
+    console.log(`Forbinder til Redis på ${subscriber.options.socket.host}:${subscriber.options.socket.port}...`);
     await subscriber.connect();
-    console.log(' Connected to Redis');
+    console.log('Connected to Redis');
 
+    // Abonner på channel og håndter beskeder
     await subscriber.subscribe('cabinet-channel', (message) => {
-        console.log(`Received message: ${message}`);
+        console.log(`Besked modtaget fra Redis: ${message}`);
 
         if (message === 'open-cabinet') {
-            if (os.platform() === 'linux') {
-                console.log('Activating relay (opening cabinet)...');
+            if (relay) {
+                console.log('BESKED MATCHER: Åbner skuffe...');
                 relay.writeSync(1);
             } else {
-                console.log(' MOCK: Would open cabinet (no GPIO)');
+                console.log('Mock: Åbner skuffe (ingen GPIO)');
             }
         } else if (message === 'close-cabinet') {
-            if (os.platform() === 'linux') {
-                console.log('Deactivating relay (closing cabinet)...');
+            if (relay) {
+                console.log('BESKED MATCHER: Lukker skuffe...');
                 relay.writeSync(0);
             } else {
-                console.log('MOCK: Would close cabinet (no GPIO)');
+                console.log('Mock: Lukker skuffe (ingen GPIO)');
             }
         } else {
-            console.log(`Unknown command: ${message}`);
+            console.log('Ukendt beskedtype!');
         }
     });
+
+    console.log('Subscribed to cabinet-channel');
+    console.log('Venter på beskeder...');
 }
 
 start();
 
-// Handle CTRL+C
+// Ctrl+C cleanup
 process.on('SIGINT', async () => {
-    console.log('Cleaning up...');
-    if (os.platform() === 'linux' && relay) {
+    console.log('Stopper og rydder op...');
+    if (relay) {
         relay.writeSync(0);
         relay.unexport();
     }
