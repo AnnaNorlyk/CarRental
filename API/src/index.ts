@@ -4,12 +4,14 @@ import UserRoutes from "./Routes/UserRoutes";
 import AuthRoutes from "./Routes/AuthRoutes"; 
 import DrawerRoutes from "./Routes/DrawerRoutes";
 import BookingRoutes from "./Routes/BookingRoutes";
+import lockerRoutes from './Routes/locker.routes';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
+app.use('/api/locker', lockerRoutes);
 app.use("/api", AuthRoutes);
 app.use("/api", UserRoutes);
 app.use("/api", DrawerRoutes);
