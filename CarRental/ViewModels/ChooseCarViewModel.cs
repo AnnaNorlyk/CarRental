@@ -1,5 +1,8 @@
-﻿using CarRental.Models;
+﻿using CarRental.DTOs;
+using CarRental.Models;
+using CarRental.Services;
 using System.Collections.ObjectModel;
+using System.Net.Http.Headers;
 
 namespace CarRental.ViewModels;
 
@@ -7,11 +10,11 @@ namespace CarRental.ViewModels;
 [QueryProperty(nameof(Gearbox), "gearbox")]
 public partial class ChooseCarViewModel : BaseViewModel
 {
-    private readonly CarService _carService;
+    private readonly IVehicleService _vehicleService;
 
-    public ChooseCarViewModel(CarService carService)
+    public ChooseCarViewModel(IVehicleService vehicleService)
     {
-        _carService = carService;
+        _vehicleService = vehicleService;
     }
 
     [ObservableProperty]
@@ -21,7 +24,7 @@ public partial class ChooseCarViewModel : BaseViewModel
     private string gearbox = string.Empty;
 
     [ObservableProperty]
-    private ObservableCollection<Car> filteredCars = new();
+    private ObservableCollection<Vehicle> filteredCars = new();
 
     partial void OnSeatsChanged(string value) => _ = LoadCarsAsync();
     partial void OnGearboxChanged(string value) => _ = LoadCarsAsync();
@@ -33,26 +36,34 @@ public partial class ChooseCarViewModel : BaseViewModel
 
         try
         {
-            var allCars = await _carService.GetAvailableCarsAsync();
+            var token = await SecureStorage.GetAsync("auth_token");
+            if (string.IsNullOrEmpty(token))
+            {
+                Console.WriteLine("Token is missing. User might not be logged in.");
+                return;
+            }
 
-            var filtered = allCars
-                .Where(c => c.Seats == seatCount &&
-                            c.Gearbox.Equals(Gearbox, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+            var searchDto = new SearchVehicleDto
+            {
+                StartDate = DateTime.Today.ToString("yyyy-MM-dd"), // Placeholder
+                EndDate = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd"), // Placeholder
+                Seats = seatCount,
+                TransmissionType = Gearbox.ToLower()
+            };
 
-            FilteredCars = new ObservableCollection<Car>(filtered);
+            var matchingCars = await _vehicleService.SearchVehiclesAsync(searchDto, token);
+            FilteredCars = new ObservableCollection<Vehicle>(matchingCars);
         }
         catch (Exception ex)
         {
-            // handle errors, optionally show message
-            Console.WriteLine($"Error loading cars: {ex.Message}");
+            Console.WriteLine($"Error fetching filtered cars: {ex.Message}");
         }
     }
 
     [RelayCommand]
-    private async Task SelectCar(Car car)
+    private async Task SelectCar(Vehicle vehicle)
     {
-        var query = $"name={Uri.EscapeDataString(car.Name)}&price={car.PricePerDay}";
+        var query = $"name={Uri.EscapeDataString(vehicle.Name)}&price={vehicle.PricePerDay}";
         await Shell.Current.GoToAsync($"{nameof(PaymentPage)}?{query}");
     }
 }

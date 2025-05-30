@@ -11,6 +11,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+app.use('/api/locker', lockerRoutes);
 app.use("/api", AuthRoutes);
 app.use("/api", UserRoutes);
 app.use("/api", DrawerRoutes);
