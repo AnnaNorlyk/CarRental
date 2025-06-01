@@ -12,7 +12,7 @@ router.post(
   async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       //Confirm that the user has an active booking
-      const bookingId = await validatePickup(req.user!.userId);
+      const bookingId = await validatePickup(req.user!.license!);
 
       // Publish the "open-cabinet" command
       await redisPub.publish("cabinet-channel", "open-cabinet");

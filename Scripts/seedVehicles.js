@@ -12,7 +12,7 @@ import { v4 as uuid }   from "uuid";
       fabricant: "Toyota",
       seats: 5,
       transmissionType: "automatic",
-      isAvailable: true
+      isAvailable: true,
     },
     {
       id: uuid(),
@@ -20,13 +20,20 @@ import { v4 as uuid }   from "uuid";
       fabricant: "Honda",
       seats: 5,
       transmissionType: "manual",
-      isAvailable: true
+      isAvailable: true,
     },
-
   ];
 
   for (const v of vehicles) {
-    await redis.set(`vehicle:${v.id}`, JSON.stringify(v));
+    const key = `vehicle:${v.id}`;
+    await redis.hSet(key, {
+      id:               v.id,
+      model:            v.model,
+      fabricant:        v.fabricant,
+      seats:            v.seats.toString(),
+      transmissionType: v.transmissionType,
+      isAvailable:      v.isAvailable.toString(),
+    });
   }
 
   console.log("Seeded vehicles:", vehicles.map(v => v.id));

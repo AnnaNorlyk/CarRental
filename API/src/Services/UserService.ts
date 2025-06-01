@@ -16,9 +16,12 @@ export async function createUser(
     role:      "customer",
   });
 
+
   return {
-    id:      data.license,
-    role:    "customer",
-    ...data
+    firstName: data.firstName,
+    lastName:  data.lastName,
+    email:     data.email,
+    license:   data.license,
+    role:      "customer",
   };
 }

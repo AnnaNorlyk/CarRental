@@ -22,22 +22,18 @@ export function requireAuth(
       process.env.JWT_SECRET as jwt.Secret
     ) as { license?: string; role?: string };
 
-    // our JWT payload carries license instead of `userId`
     if (!payload.license || !payload.role) {
       res.status(401).json({ error: "Not authenticated" });
       return;
     }
 
-    // map the license to userId for handlers
     req.user = {
-      userId: payload.license,
-      role:   payload.role,
+      license: payload.license,
+      role:    payload.role,
     };
 
     next();
   } catch {
-    // invalid or expired token
     res.status(401).json({ error: "Not authenticated" });
   }
 }
-
