@@ -2,19 +2,17 @@
 
 public partial class ChooseCarPage : ContentPage
 {
-	public ChooseCarPage(ChooseCarViewModel viewModel)
+    private readonly ChooseCarViewModel _viewModel;
+    public ChooseCarPage(ChooseCarViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
+		BindingContext = _viewModel = viewModel;
     }
 
-    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    protected override async void OnAppearing()
     {
-        if (e.CurrentSelection.FirstOrDefault() is Vehicle selectedCar &&
-            BindingContext is ChooseCarViewModel vm)
-        {
-            vm.SelectCarCommand.Execute(selectedCar);
-        }
+        base.OnAppearing();
+        await _viewModel.LoadVehiclesCommand.ExecuteAsync(null);
     }
 
 }

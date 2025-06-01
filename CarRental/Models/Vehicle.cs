@@ -2,14 +2,11 @@
 {
     public class Vehicle
     {
-        public string Name { get; set; } = string.Empty;
-        public string Brand { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; set; }
+        public string Model { get; set; }
+        public string Fabricant { get; set; }
         public int Seats { get; set; }
-        public string Gearbox { get; set; } = string.Empty;
-        public decimal PricePerDay { get; set; }
-        public string ImageUrl { get; set; } = string.Empty;
-
+        public string TransmissionType { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

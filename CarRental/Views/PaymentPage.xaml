@@ -1,14 +1,14 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:vm="clr-namespace:CarRental.ViewModels"
-			 x:Class="CarRental.Views.PaymentPage"
-			 x:DataType="vm:PaymentViewModel">
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:CarRental.ViewModels"
+             x:Class="CarRental.Views.PaymentPage"
+             >
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
             <Label Text="{Binding Name}" FontSize="24" />
             <Label Text="{Binding Price, StringFormat='Price: {0} DKK'}" />
-    
+
             <Label Text="Phone number:" />
             <Entry Placeholder="+4512345678" Text="{Binding Phone}" Keyboard="Telephone" />
 

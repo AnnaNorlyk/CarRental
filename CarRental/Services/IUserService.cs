@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CarRental.DTOs;
 
 namespace CarRental.Services
 {
-    internal interface IUserService
+    public interface IUserService
     {
 
         Task<List<User>> GetAllUsersAsync();
@@ -14,6 +15,8 @@ namespace CarRental.Services
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
+        Task<bool> CreateUserAsync(CreateUserDto user);
+        Task<string?> LoginAsync(LoginDto loginDto);
 
 
     }
