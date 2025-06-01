@@ -1,21 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 xmlns:vm="clr-namespace:CarRental.ViewModels"
 			 x:Class="CarRental.Views.PaymentPage"
 			 x:DataType="vm:PaymentViewModel">
 
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label Text="{Binding Name}" FontSize="24" />
+            <Label Text="{Binding Price, StringFormat='Price: {0} DKK'}" />
     
-        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Phone number:" />
+            <Entry Placeholder="+4512345678" Text="{Binding Phone}" Keyboard="Telephone" />
 
-            <Label Text="{Binding CarName}" FontSize="20" />
-            <Label Text="{Binding PricePerDay, StringFormat='Price per day: {0} DKK'}" FontSize="16" />
+            <Label Text="Start date:" />
+            <DatePicker Date="{Binding StartDate}" />
 
-            <Entry Placeholder="Card Number" Text="{Binding CardNumber}" Keyboard="Numeric" />
-            <Entry Placeholder="Expiry (MM/YY)" Text="{Binding Expiry}" />
-            <Entry Placeholder="CVC" Text="{Binding Cvc}" Keyboard="Numeric" />
+            <Label Text="End date:" />
+            <DatePicker Date="{Binding EndDate}" />
 
-            <Button Text="Pay" Command="{Binding SubmitPaymentCommand}" />
+            <Button Text="Confirm Booking" Command="{Binding ConfirmBookingCommand}" />
         </VerticalStackLayout>
-
+    </ScrollView>
 </ContentPage>
