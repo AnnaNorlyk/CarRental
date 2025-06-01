@@ -7,32 +7,21 @@ namespace CarRental.ViewModels;
 
 public partial class CollectKeyViewModel : BaseViewModel
 {
-    private readonly HttpClient _httpClient;
+    private readonly ILockerService _lockerService;
 
-    public CollectKeyViewModel(HttpClient httpClient)
+    public CollectKeyViewModel(ILockerService lockerService)
     {
-        _httpClient = httpClient;
+        _lockerService = lockerService;
     }
 
     [RelayCommand]
-    private async Task OpenLocker()
+    private async Task Unlock()
     {
-        try
-        {
-            var response = await _httpClient.PostAsync("https://your-api-url/api/locker/open", null);
+        var success = await _lockerService.OpenLockerAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
-                await Shell.Current.DisplayAlert("Success", "Locker is opening!", "OK");
-            }
-            else
-            {
-                await Shell.Current.DisplayAlert("Error", "Failed to open locker.", "OK");
-            }
-        }
-        catch (Exception ex)
-        {
-            await Shell.Current.DisplayAlert("Error", $"Exception: {ex.Message}", "OK");
-        }
+        if (success)
+            await Shell.Current.DisplayAlert("Success", "Locker is opening", "OK");
+        else
+            await Shell.Current.DisplayAlert("Error", "Failed to open locker", "OK");
     }
 }
