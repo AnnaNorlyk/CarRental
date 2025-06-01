@@ -1,19 +1,17 @@
-﻿namespace CarRental.ViewModels;
+﻿using CarRental.DTOs;
 
-[QueryProperty(nameof(CarName), "name")]
-[QueryProperty(nameof(PricePerDay), "price")]
+
+
+
 public partial class PaymentViewModel : BaseViewModel
 {
-    [ObservableProperty] private string carName;
-    [ObservableProperty] private decimal pricePerDay;
+    private readonly IUserService _userService;
+    private readonly IVehicleService _vehicleService;
 
-    [ObservableProperty] private string cardNumber;
-    [ObservableProperty] private string expiry;
-    [ObservableProperty] private string cvc;
-
-    [RelayCommand]
-    private async Task SubmitPayment()
+    public PaymentViewModel(IUserService userService, IVehicleService vehicleService)
     {
-        await Shell.Current.GoToAsync($"{nameof(ConfirmationPage)}?car={Uri.EscapeDataString(CarName)}");
+        _userService = userService;
+        _vehicleService = vehicleService;
     }
+
 }

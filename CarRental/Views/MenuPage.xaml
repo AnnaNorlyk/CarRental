@@ -17,6 +17,8 @@
         <Button Text="Book a Car" Command="{Binding GoToBookingCommand}" />
         <Button Text="Collect Key" Command="{Binding GoToCollectKeyCommand}" />
         <Button Text="Deliver Key" Command="{Binding GoToDeliverKeyCommand}" />
+        <Button Text="Logout" Command="{Binding LogoutCommand}" BackgroundColor="DarkRed" TextColor="White"/>
+
 
     </VerticalStackLayout>
     
