@@ -1,6 +1,6 @@
 const { createClient } = require("redis");
 
-//S
+//Script to list all vehicles. 
 
 (async () => {
   const redis = createClient({
@@ -9,7 +9,7 @@ const { createClient } = require("redis");
   await redis.connect();
 
   // Find all keys 
-  const keys = await redis.keys("vehicle:*");
+  const keys = await redis.keys("vehicle:*"); 
   if (!keys.length) {
     console.log("No seeded vehicles found.");
   } else {

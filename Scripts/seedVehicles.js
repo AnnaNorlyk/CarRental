@@ -26,14 +26,7 @@ import { v4 as uuid }   from "uuid";
 
   for (const v of vehicles) {
     const key = `vehicle:${v.id}`;
-    await redis.hSet(key, {
-      id:               v.id,
-      model:            v.model,
-      fabricant:        v.fabricant,
-      seats:            v.seats.toString(),
-      transmissionType: v.transmissionType,
-      isAvailable:      v.isAvailable.toString(),
-    });
+    await redis.set(key, JSON.stringify(v));
   }
 
   console.log("Seeded vehicles:", vehicles.map(v => v.id));
