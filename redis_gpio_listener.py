@@ -5,14 +5,14 @@ import time
 # GPIO-opsætning
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-RELAY_PIN = 17
+RELAY_PIN = 18
 GPIO.setup(RELAY_PIN, GPIO.OUT)
 GPIO.output(RELAY_PIN, GPIO.LOW)  # starts with closed cabinet
 
-print("[INFO] GPIO pin 17 klar.")
+print("[INFO] GPIO pin 18 klar.")
 
 # connect to Redis
-r = redis.Redis(host='10.176.69.104', port=6379, decode_responses=True)
+r = redis.Redis(host='10.176.69.106', port=6379, decode_responses=True)
 pubsub = r.pubsub()
 pubsub.subscribe('cabinet-channel')
 print("[INFO] Tilsluttet Redis. Venter på beskeder...")

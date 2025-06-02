@@ -22,10 +22,12 @@ let connected = false;
 export async function publishMessage(channel: string, message: string) {
   if (!connected) {
     await redis.connect();
-    connected = true;
+    connected = true; 
   }
 
    // Publish the message to the given channel
   await redis.publish(channel, message);
   console.log(`[Redis] Published: ${message} on ${channel}`);
 }
+
+
