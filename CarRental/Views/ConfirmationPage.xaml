@@ -9,10 +9,9 @@
 
 
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Booking Confirmed!" FontSize="24" />
-        <Label Text="{Binding Car}" FontSize="18" />
-        <Label Text="Thank you for renting with us." FontSize="16" />
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Label Text="🎉 Booking Confirmed!" FontSize="24" HorizontalOptions="Center" />
+        <Button Text="Back to Menu" Command="{Binding GoBackCommand}" />
     </VerticalStackLayout>
     
     

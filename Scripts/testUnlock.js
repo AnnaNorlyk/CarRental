@@ -1,27 +1,28 @@
-// scripts/testUnlock.js
-// Node 18+ has fetch built-in; no need for node-fetch
 ;(async () => {
   const apiBase = "http://localhost:3000";
-  const EMAIL   = "brian@test.com";
-  const LICENSE = "LIC456";
-  const DRAWER  = "drawer1";
-  const VEHICLE = "vehicle123";
 
-  // ─── 0) Ensure user exists ───────────────────────────────
+  // User credentials
+  const EMAIL   = "anna@test.com";
+  const LICENSE = "LIC789";
+
+  // One of the real seeded vehicle IDs from Redis
+  const VEHICLE = "58f562f3-c260-4c5c-8b1d-cf93fe8965ba";
+
+  // Ensure the user “Anna Kristensen” exists, and creates if not.
   console.log("→ POST /api/users");
   let res = await fetch(`${apiBase}/api/users`, {
     method:  "POST",
     headers: { "Content-Type": "application/json" },
     body:    JSON.stringify({
-      firstName: "Brian",
-      lastName:  "Larsen",
+      firstName: "Anna",
+      lastName:  "Kristensen",
       email:     EMAIL,
       license:   LICENSE
     }),
   });
   console.log("  Status:", res.status, "Body:", await res.text());
 
-  // ─── 1) Log in ────────────────────────────────────────────
+  // Log in to receive a JWT token
   console.log("\n→ POST /api/login");
   res = await fetch(`${apiBase}/api/login`, {
     method:  "POST",
@@ -35,7 +36,7 @@
   const { token } = await res.json();
   console.log("  Got token:", token);
 
-  // ─── 2) Create booking ───────────────────────────────────
+  // Create a booking on the chosen vehicle
   console.log("\n→ POST /api/bookings");
   const now       = new Date();
   const inOneHour = new Date(now.getTime() + 60 * 60 * 1000);
@@ -47,10 +48,9 @@
       "Authorization": `Bearer ${token}`,
     },
     body: JSON.stringify({
-      drawerId:           DRAWER,
       vehicleId:          VEHICLE,
-      customerFirstName:  "Brian",
-      customerLastName:   "Larsen",
+      customerFirstName:  "Anna",
+      customerLastName:   "Kristensen",
       customerEmail:      EMAIL,
       customerLicenseId:  LICENSE,
       customerMobile:     "+4512345678",
@@ -66,7 +66,7 @@
     return process.exit(1);
   }
 
-  // ─── 3) Unlock drawer ────────────────────────────────────
+  // Send unlock command so the Pi can open the drawer
   console.log("\n→ POST /api/drawer/unlock");
   res = await fetch(`${apiBase}/api/drawer/unlock`, {
     method:  "POST",
@@ -74,10 +74,10 @@
       "Content-Type":  "application/json",
       "Authorization": `Bearer ${token}`,
     },
-    body: JSON.stringify({ drawerId: DRAWER }),
   });
   console.log("  Status:", res.status, "Body:", await res.text());
 
+  // Exit with success if drawer unlocked, or failure otherwise
   process.exit(res.ok ? 0 : 1);
 })().catch(err => {
   console.error(err);

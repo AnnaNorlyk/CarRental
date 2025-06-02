@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:CarRental.ViewModels"
+             x:Class="CarRental.Views.RegisterPage"
+             x:DataType="vm:RegisterViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+
+            <Label Text="Register" FontSize="32" HorizontalOptions="Center" />
+
+            <Label Text="First Name:" />
+            <Entry Placeholder="Enter first name"
+                   Text="{Binding FirstName}" />
+
+            <Label Text="Last Name:" />
+            <Entry Placeholder="Enter last name"
+                   Text="{Binding LastName}" />
+
+            <Label Text="Email:" />
+            <Entry Placeholder="Enter email"
+                   Keyboard="Email"
+                   Text="{Binding Email}" />
+
+            <Label Text="Driver License Number (8 digits):" />
+            <Entry Placeholder="Enter license number"
+                   Keyboard="Numeric"
+                   MaxLength="8"
+                   Text="{Binding License}" />
+
+            <Button Text="Register"
+                    Command="{Binding RegisterCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

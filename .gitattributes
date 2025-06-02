@@ -61,3 +61,16 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+# Build and dependency folders 
+API/node_modules/**          linguist-vendored
+flutter_frontend/build/**    linguist-vendored
+flutter_frontend/windows/**  linguist-vendored
+flutter_frontend/linux/**    linguist-vendored
+flutter_frontend/macos/**    linguist-vendored
+
+# Skip any stray CMake/C++ files
+*.cpp                        linguist-vendored
+*.cc                         linguist-vendored
+*.h                          linguist-vendored
+CMakeLists.txt               linguist-vendored
+*.cmake                      linguist-vendored

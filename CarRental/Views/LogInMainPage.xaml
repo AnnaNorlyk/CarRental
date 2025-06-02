@@ -29,6 +29,12 @@
 
         <Button Text="Login"
                 Command="{Binding LoginCommand}" />
+
+        <Button Text="Register"
+        FontSize="14"
+        HorizontalOptions="Center"
+        Command="{Binding GoToRegisterCommand}" />
+
     </VerticalStackLayout>
     
     

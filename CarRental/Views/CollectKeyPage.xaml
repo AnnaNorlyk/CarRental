@@ -1,8 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:vm="clr-namespace:CarRental.ViewModels"
-			 x:Class="CarRental.Views.CollectKeyPage"
-			 x:DataType="vm:CollectKeyViewModel">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:CarRental.ViewModels"
+             x:Class="CarRental.Views.CollectKeyPage"
+             x:DataType="vm:CollectKeyViewModel">
+
+    <VerticalStackLayout Padding="30" Spacing="20">
+        <Label Text="Ready to collect your key?" FontSize="24" HorizontalOptions="Center" />
+
+        <Button 
+            Text="Open Locker" 
+            Command="{Binding UnlockCommand}" 
+            BackgroundColor="DarkGreen" 
+            TextColor="White"/>
+    </VerticalStackLayout>
 
 </ContentPage>
