@@ -38,7 +38,6 @@ export async function searchVehicles(
   const allKeys = await redis.keys("booking:*");
   const bookingKeys = allKeys.filter(k => !k.startsWith("booking:user:"));
 
-  // load each booking hash
   const bookingHashes = await Promise.all(
     bookingKeys.map(k => redis.hGetAll(k))
   );
@@ -48,9 +47,9 @@ export async function searchVehicles(
   for (const v of candidates) {
     let hasOverlap = false;
     for (const h of bookingHashes) {
-      if (h.vehicleId === v.id) {
-        const bStart = Number(h.startDate);
-        const bEnd   = Number(h.endDate);
+      if (h["vehicleId"] === v.id) {
+        const bStart = Number(h["startDate"]);
+        const bEnd   = Number(h["endDate"]);
         // check overlap
         if (!(endMs <= bStart || startMs >= bEnd)) {
           hasOverlap = true;

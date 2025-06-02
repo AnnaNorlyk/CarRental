@@ -6,7 +6,7 @@
   const LICENSE = "LIC789";
 
   // One of the real seeded vehicle IDs from Redis
-  const VEHICLE = "58f562f3-c260-4c5c-8b1d-cf93fe8965ba";
+  const VEHICLE = "d557684e-4ec8-418d-809d-20333373fcb9";
 
   // Ensure the user “Anna Kristensen” exists, and creates if not.
   console.log("→ POST /api/users");

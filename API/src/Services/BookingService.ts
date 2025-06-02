@@ -9,6 +9,7 @@ class Forbidden extends Error { status = 403; }
 
 //Create a new booking record in Redis.
 export async function createBooking(userId: string, dto: CreateBookingDTO): Promise<Booking> {
+
   // Verify vehicle exists and is available
   const vehicle = await getVehicleById(dto.vehicleId);
   if (!vehicle || !vehicle.isAvailable) {
@@ -35,7 +36,7 @@ export async function createBooking(userId: string, dto: CreateBookingDTO): Prom
     collectionCode,
   };
 
-  const key = `booking:${booking.id}`;
+const key = `booking:${booking.id}`;
   // Store all booking fields in a hash
   await redis.hSet(key, {
     ...Object.fromEntries(
@@ -43,15 +44,15 @@ export async function createBooking(userId: string, dto: CreateBookingDTO): Prom
     ),
     userId,
   });
-  // Map user 
-  await redis.set(`booking:user:${userId}`, booking.id);
+
+  // Map user to booking ID
+  const userKey = `booking:user:${userId}`;
+  await redis.set(userKey, booking.id);
 
   return booking;
 }
 
-
 //Mark the booking as picked up (retrieved).
-
 export async function pickupBooking(bookingId: string): Promise<void> {
   const key = `booking:${bookingId}`;
   await redis.hSet(key, "keyStatus", "Retrieved");
@@ -68,8 +69,9 @@ export async function dropoffBooking(bookingId: string): Promise<void> {
  * and that the key hasn’t yet been retrieved or returned.
  * Returns the bookingId if valid
  */
-export async function validatePickup(userId: string): Promise<string> {
-  const bookingId = await redis.get(`booking:user:${userId}`);
+export async function validatePickup(license: string): Promise<string> {
+  const bookingId = await redis.get(`booking:user:${license}`);
+
   if (!bookingId) throw new Forbidden("No active booking");
 
   const data = await redis.hGetAll(`booking:${bookingId}`);
