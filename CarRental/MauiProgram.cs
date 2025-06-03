@@ -30,6 +30,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<DeliverKeyViewModel>();
         builder.Services.AddSingleton<RegisterViewModel>();
 
+        builder.Services.AddSingleton<IBookingService, BookingService>();
         builder.Services.AddSingleton<ILockerService, LockerService>();
         builder.Services.AddSingleton<IVehicleService, VehicleService>();
         builder.Services.AddSingleton<IUserService, UserService>();

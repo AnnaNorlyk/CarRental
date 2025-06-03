@@ -2,40 +2,32 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
            xmlns:vm="clr-namespace:CarRental.ViewModels"  
+           xmlns:models="clr-namespace:CarRental.Models"  
            x:Class="CarRental.Views.ChooseCarPage"  
            x:DataType="vm:ChooseCarViewModel"  
            Title="Choose Your Car">  
 
   <ScrollView>  
-      <VerticalStackLayout Padding="20" Spacing="10">  
+      <VerticalStackLayout Padding="20" Spacing="10">
 
-          <Label Text="Available Cars"  
-                 FontSize="24"  
-                 HorizontalOptions="Center" />  
-          <Button Text="Load Cars" Command="{Binding LoadVehiclesCommand}" />  
+            <CollectionView ItemsSource="{Binding Vehicles}"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
+                SelectionChanged="OnVehicleSelected" >
+            <CollectionView.ItemTemplate>  
+                   <DataTemplate x:DataType="models:Vehicle">  
+                       <Border Padding="10" Margin="5">  
+                           <VerticalStackLayout>  
+                               <Label Text="{Binding Fabricant}" FontAttributes="Bold" />  
+                               <Label Text="{Binding Model}" />  
+                               <Label Text="{Binding Seats}" />  
+                               <Label Text="{Binding TransmissionType}" />  
+                           </VerticalStackLayout>  
+                       </Border>  
+                   </DataTemplate>  
+               </CollectionView.ItemTemplate>  
+           </CollectionView>  
 
-          <CollectionView  
-              ItemsSource="{Binding FilteredCars}"  
-              SelectionMode="Single"  
-              SelectionChangedCommand="{Binding SelectCarCommand}"  
-              >  
-
-              <CollectionView.ItemTemplate>  
-                  <DataTemplate>  
-                      <Border Padding="10" Margin="5" Stroke="Gray" StrokeThickness="1" BackgroundColor="White">  
-                          <VerticalStackLayout>  
-                              <Label Text="{Binding Fabricant}" FontSize="18" FontAttributes="Bold" />  
-                              <Label Text="{Binding Model}" FontSize="16" />  
-                              <Label Text="{Binding TransmissionType}" />  
-                              <Label Text="{Binding Seats, StringFormat='Seats: {0}'}" />  
-                              <Label Text="Available" IsVisible="{Binding IsAvailable}" TextColor="Green" />  
-                              <Label Text="Not Available" IsVisible="{Binding IsAvailable, Converter={StaticResource InverseBoolConverter}}" TextColor="Red" />  
-                          </VerticalStackLayout>  
-                      </Border>  
-                  </DataTemplate>  
-              </CollectionView.ItemTemplate>  
-          </CollectionView>  
-
-      </VerticalStackLayout>  
+       </VerticalStackLayout>  
   </ScrollView>  
 </ContentPage>

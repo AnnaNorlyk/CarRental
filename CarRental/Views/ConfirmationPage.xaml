@@ -8,12 +8,10 @@
 
 
 
-
-    <VerticalStackLayout Padding="20" Spacing="20">
-        <Label Text="🎉 Booking Confirmed!" FontSize="24" HorizontalOptions="Center" />
-        <Button Text="Back to Menu" Command="{Binding GoBackCommand}" />
-    </VerticalStackLayout>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label Text="Booking Confirmed!" FontAttributes="Bold" FontSize="24" />
+            <Label x:Name="BookingSummary" FontSize="16" />
+        </VerticalStackLayout>
+  
     
-    
-
 </ContentPage>
