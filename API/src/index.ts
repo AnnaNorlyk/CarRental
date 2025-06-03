@@ -6,6 +6,7 @@ import DrawerRoutes from "./Routes/DrawerRoutes";
 import BookingRoutes from "./Routes/BookingRoutes";
 import VehicleRoutes from "./Routes/VehicleRoutes";
 import redisTestRoutes from "./Routes/RedisTestRoutes";
+import AdminRoutes from "./Routes/AdminRoutes";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use("/api", DrawerRoutes);
 app.use("/api", BookingRoutes);
 app.use("/api", VehicleRoutes);
 app.use("/api", redisTestRoutes);
+app.use("/api", AdminRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
