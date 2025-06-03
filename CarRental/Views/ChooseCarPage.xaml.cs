@@ -1,18 +1,36 @@
-﻿namespace CarRental.Views;
+﻿
+namespace CarRental.Views;
 
 public partial class ChooseCarPage : ContentPage
 {
-    private readonly ChooseCarViewModel _viewModel;
+    
     public ChooseCarPage(ChooseCarViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = _viewModel = viewModel;
+		BindingContext = viewModel;
     }
 
-    protected override async void OnAppearing()
+
+    private async void OnVehicleSelected(object sender, SelectionChangedEventArgs e)
     {
-        base.OnAppearing();
-        await _viewModel.LoadVehiclesCommand.ExecuteAsync(null);
+        if (e.CurrentSelection.FirstOrDefault() is Vehicle selected)
+        {
+            // Hent ViewModel (hvis du vil hente StartDate/EndDate derfra)
+            if (BindingContext is ChooseCarViewModel vm)
+            {
+                var navParams = new Dictionary<string, object>
+            {
+                { "vehicleId", selected.Id },
+                { "start", vm.StartDate },
+                { "end", vm.EndDate }
+            };
+
+                await Shell.Current.GoToAsync(nameof(PaymentPage), navParams);
+            }
+
+            // (Valgfrit) Ryd valg, så man kan trykke samme bil igen
+            ((CollectionView)sender).SelectedItem = null;
+        }
     }
 
 }

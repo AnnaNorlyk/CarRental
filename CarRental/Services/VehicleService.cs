@@ -19,12 +19,19 @@ internal class VehicleService : IVehicleService
 
     public async Task<List<Vehicle>> SearchVehiclesAsync(SearchVehicleDto dto, string token)
     {
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var json = JsonSerializer.Serialize(dto, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
 
-        var json = JsonSerializer.Serialize(dto, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Post, "vehicles/search")
+        {
+            Content = new StringContent(json, Encoding.UTF8, "application/json")
+        };
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        var response = await _httpClient.PostAsync("vehicles/search", content);
+        var response = await _httpClient.SendAsync(request);
+
         if (!response.IsSuccessStatusCode)
         {
             var error = await response.Content.ReadAsStringAsync();
@@ -34,4 +41,15 @@ internal class VehicleService : IVehicleService
 
         return await response.Content.ReadFromJsonAsync<List<Vehicle>>() ?? new List<Vehicle>();
     }
+
+    public async Task<List<Vehicle>> GetAllVehiclesAsync()
+    {
+        var response = await _httpClient.GetAsync("vehicles");
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<List<Vehicle>>() ?? new List<Vehicle>();
+    }
+
+
+
 }
+

@@ -4,7 +4,7 @@ public partial class PaymentPage : ContentPage
 {
 	public PaymentPage(PaymentViewModel viewModel)
 	{
-		InitializeComponent();
+        InitializeComponent();
 		BindingContext = viewModel;
 	}
 }

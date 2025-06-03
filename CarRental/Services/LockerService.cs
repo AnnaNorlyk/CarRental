@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
+using static System.Net.WebRequestMethods;
 
 
 namespace CarRental.Services
@@ -22,13 +23,12 @@ namespace CarRental.Services
         public async Task<bool> OpenLockerAsync()
         {
             try
-            { 
-                var response = await _httpClient.PostAsync("open", null);
+            {
+                var response = await _httpClient.PostAsync("drawer/unlock", null);
                 return response.IsSuccessStatusCode;
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine("Locker open error: " + ex.Message);
                 return false;
             }
         }

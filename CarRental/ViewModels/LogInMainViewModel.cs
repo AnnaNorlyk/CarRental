@@ -41,6 +41,7 @@ public partial class LogInMainViewModel : BaseViewModel
         if (!string.IsNullOrEmpty(token))
         {
             await Shell.Current.GoToAsync(nameof(MenuPage));
+            Debug.WriteLine($"Login successful, token: {token}");
         }
         else
         {

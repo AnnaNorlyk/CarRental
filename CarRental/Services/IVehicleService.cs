@@ -6,4 +6,5 @@ public interface IVehicleService
 {
     Task<List<Vehicle>> SearchVehiclesAsync(SearchVehicleDto dto, string token);
 
+    Task<List<Vehicle>> GetAllVehiclesAsync();
 }
