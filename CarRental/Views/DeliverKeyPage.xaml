@@ -10,7 +10,7 @@
 
         <Button 
             Text="Close Locker" 
-            Command="{Binding CloseLockerCommand}" 
+            Command="{Binding UnlockCommand}" 
             BackgroundColor="DarkRed" 
             TextColor="White"/>
     </VerticalStackLayout>
