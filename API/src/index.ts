@@ -6,7 +6,7 @@ import DrawerRoutes from "./Routes/DrawerRoutes";
 import BookingRoutes from "./Routes/BookingRoutes";
 import VehicleRoutes from "./Routes/VehicleRoutes";
 import redisTestRoutes from "./Routes/RedisTestRoutes";
-import AdminRoutes from "./Routes/AdminRoutes";
+import AdminRoutes from "./Routes/EditingRoutes";
 
 dotenv.config();
 
