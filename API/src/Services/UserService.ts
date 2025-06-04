@@ -14,6 +14,7 @@ export async function createUser(
     email:     data.email,
     license:   data.license,
     role:      "customer",
+    mobile:    data.mobile,
   });
 
 
@@ -23,5 +24,6 @@ export async function createUser(
     email:     data.email,
     license:   data.license,
     role:      "customer",
+    mobile:    data.mobile,
   };
 }

@@ -4,5 +4,6 @@ export interface User {
     email: string;
     license: string;
     role: "customer";
+    mobile: string;
   }
   

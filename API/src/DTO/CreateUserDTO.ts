@@ -3,5 +3,6 @@ export interface CreateUserDTO {
     lastName:  string;
     email:     string;
     license:   string;
+    mobile:    string;
   }
   

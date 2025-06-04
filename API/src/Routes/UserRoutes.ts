@@ -7,8 +7,8 @@ const UserRoutes = Router();
 UserRoutes.post("/users", (req: Request<{}, {}, CreateUserDTO>, res: Response): void => {
   const dto = req.body;  
 
-  const { firstName, lastName, email, license } = dto;
-  if (!firstName || !lastName || !email || !license) {
+  const { firstName, lastName, email, license, mobile } = dto;
+  if (!firstName || !lastName || !email || !license || !mobile) {
     res.status(400).json({ error: "Missing required fields." });
     return;
   }
